@@ -46,6 +46,7 @@ class NgspiceWidget(QtWidgets.QWidget):
             self.args = ['-b', '-r', command.replace(".cir.out", ".raw"), command]
             self.process.setWorkingDirectory(projPath)
             self.process.start('ngspice', self.args)
+            self.process.readyReadStandardOutput.connect(lambda: self.readyReadAll())
             self.obj_appconfig.process_obj.append(self.process)
             print(self.obj_appconfig.proc_dict)
             (
@@ -53,7 +54,13 @@ class NgspiceWidget(QtWidgets.QWidget):
                 [self.obj_appconfig.current_project['ProjectName']].append(
                     self.process.pid())
             )
-            self.process = QtCore.QProcess(self)
+            self.gawProcess = QtCore.QProcess(self)
             self.command = "gaw " + command.replace(".cir.out", ".raw")
-            self.process.start('sh', ['-c', self.command])
+            self.gawProcess.start('sh', ['-c', self.command])
             print(self.command)
+    
+    @QtCore.pyqtSlot()
+    def readyReadAll(self):
+        self.obj_appconfig.noteArea['Note'].append(
+            str(self.process.readAllStandardOutput().data(), encoding='utf-8')
+        )
