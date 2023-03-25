@@ -582,7 +582,7 @@ class Application(QtWidgets.QMainWindow):
                     #     proc = 'xterm'
 
                     # Edited by Sumanto Kar 25/08/2021
-                    if os.name != 'nt' and \
+                    if False and os.name != 'nt' and \
                             self.checkIfProcessRunning('xterm') is False:
                         self.msg = QtWidgets.QErrorMessage()
                         self.msg.setModal(True)

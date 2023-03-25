@@ -39,12 +39,13 @@ class NgspiceWidget(QtWidgets.QWidget):
             os.chdir(tempdir)
 
         else:                   # For Linux OS
-            self.command = "cd " + projPath + \
-                ";ngspice -r " + command.replace(".cir.out", ".raw") + \
-                " " + command
+            # self.command = "cd " + projPath + \
+            #     ";ngspice -r " + command.replace(".cir.out", ".raw") + \
+            #     " " + command
             # Creating argument for process
-            self.args = ['-hold', '-e', self.command]
-            self.process.start('xterm', self.args)
+            self.args = ['-b', '-r', command.replace(".cir.out", ".raw"), command]
+            self.process.setWorkingDirectory(projPath)
+            self.process.start('ngspice', self.args)
             self.obj_appconfig.process_obj.append(self.process)
             print(self.obj_appconfig.proc_dict)
             (
