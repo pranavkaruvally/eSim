@@ -7,7 +7,7 @@ import os
 # This Class creates NgSpice Window
 class NgspiceWidget(QtWidgets.QWidget):
 
-    def __init__(self, command, projPath):
+    def __init__(self, command, projPath, ngspiceUi):
         """
         - Creates constructor for NgspiceWidget class.
         - Checks whether OS is Linux or Windows and
@@ -47,6 +47,7 @@ class NgspiceWidget(QtWidgets.QWidget):
             self.process.setWorkingDirectory(projPath)
             self.process.start('ngspice', self.args)
             self.process.readyReadStandardOutput.connect(lambda: self.readyReadAll())
+            self.process.finished.connect(lambda: ngspiceUi.makeProgressComplete())
             self.obj_appconfig.process_obj.append(self.process)
             print(self.obj_appconfig.proc_dict)
             (

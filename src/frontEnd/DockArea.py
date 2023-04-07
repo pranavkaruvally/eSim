@@ -9,6 +9,7 @@ from kicadtoNgspice.KicadtoNgspice import MainWindow
 from browser.Welcome import Welcome
 from browser.UserManual import UserManual
 from ngspicetoModelica.ModelicaUI import OpenModelicaEditor
+from progressBar.progressBar import Ui_Simulation
 import os
 
 dockList = ['Welcome']
@@ -132,8 +133,11 @@ class DockArea(QtWidgets.QMainWindow):
         self.ngspiceWidget = QtWidgets.QWidget()
 
         self.ngspiceLayout = QtWidgets.QVBoxLayout()
+        self.ngspiceUi = Ui_Simulation()
+        self.ngspiceUi.setupUi(self.ngspiceWidget)
+        self.ngspiceWidget.setLayout(self.ngspiceLayout)
         self.ngspiceLayout.addWidget(
-            NgspiceWidget(self.ngspiceNetlist, self.projDir)
+            NgspiceWidget(self.ngspiceNetlist, self.projDir, self.ngspiceUi)
         )
 
         # Adding to main Layout
